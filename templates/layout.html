@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}" />
+    {% block head_content %} {% endblock %}
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="header__logo">
+        <a class="header__link" href="{{ url_for('habits.index')}}">Habits</a>
+      </h1>
+      {% if "add" not in request.endpoint %}
+      <a href="{{ url_for('habits.add_habit') }}" class="header__link">+ Add new</a>
+      {% endif %}
+    </header>
+
+    <main class="main">
+      <section class="dates">
+        {% for date in date_range(selected_date) %}
+        <a
+          href="{{ url_for('habits.index',date=date)}}"
+          class="dates__link {{ 'dates__link--current' if loop.index0 == 3 else ''}}"
+        >
+          <time class="date" datetime="{{date}}">
+            <span>{{ date.strftime("%a")}} </span>
+            <span>{{ date.strftime("%d")}} </span>
+          </time>
+        </a>
+
+        {% endfor %}
+      </section>
+      {% block main_content %} {% endblock %}
+    </main>
+  </body>
+</html>
